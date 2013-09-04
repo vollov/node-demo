@@ -1,0 +1,79 @@
+var util = require('util'),    
+    http = require('http');
+
+http.createServer(function (req, res) {
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.write('hello, i know nodejitsu.')
+  res.end();
+}).listen(8000);
+
+/* server started */  
+util.puts('> hello world running on port 8000');
+
+
+[1] run in fornt, node will exit when shell exits
+$ node simple-server.js
+> hello world running on port 8000
+
+[2] using nohup to run in background
+$ nohup node simple-server.js > output.log &
+1 23909
+
+[3] to start the script as a daemon using a library like daemon.node
+
+[4] simulate an unstable server
+var util = require('util'),
+    http = require('http');
+
+http.createServer(function (req, res) {
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.write('hello, i know nodejitsu.')
+  res.end();
+}).listen(8000);
+
+/* server started */  
+util.puts('> hello world running on port 8000');
+
+setTimeout(function () {
+  util.puts('Throwing error now.');
+  throw new Error('User generated fault.');
+}, 5000); 
+
+
+[5] forever
+
+usage: forever [start | stop | stopall | list] [options] SCRIPT [script options]
+
+options:
+  start          start SCRIPT as a daemon
+  stop           stop the daemon SCRIPT
+  stopall        stop all running forever scripts
+  list           list all running forever scripts
+
+You can also use Forever as a long running process by omitting the 'start' option. With these tasks available, starting a nodejs script with Forever is simple:
+$ forever start simple-server.js
+$ forever list
+  0 simple-server.js [ 24597, 24596 ]
+
+The IDs after the script name are the process IDs of the target script and the forever daemon watching that script respectively. We can confirm this by looking at the process list ourselves:
+$ ps axl | grep node
+  501 24596     1   0  31  0  Ss     ??    0:00.03 node /usr/local/bin/forever start simple-server.js
+  501 24597 24412   0  31  0  S      ??    0:00.07 node simple-server.js
+
+# Stopping and restarting with Forever To illustrate that Forever will automatically restart a child process that exits, lets kill the process ourselves:
+$ kill 24597
+$ forever list
+  0 simple-server.js [ 24611, 24596 ]
+
+As you can see the process ID of the target script 'simple-server.js' has changed from 24597 to 24611 indicating that a new process has been started by Forever. So our target script will run continuously, but how do we stop it? Stopping a process with Forever is simple from the command line. We simply need to pass the index for that process show from 'forever list':
+$ forever stop 0
+Forever stopped process:
+  0 simple-server.js [ 24611, 24596 ]
+
+Additional Forever options
+
+There are some default options and configuration conventions that you should be aware of when using Forever:
+1)Forever keeps track of running processes in *.fvr files that are placed in /tmp/forever/pids
+2)Each Forever process will generate a unique log file placed in /tmp/forever/*.log
+3)Unless otherwise specified, the output of the child process' stdout and stderr will be written to the above log file.
+
