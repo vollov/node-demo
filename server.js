@@ -1,16 +1,49 @@
-var util = require('util'),
-    http = require('http');
+var express = require('express')
+//  , routes = require('./routes')
+  , fs = require('fs')
+  , User = require('./models/User.js');
 
-http.createServer(function (req, res) {
-  res.writeHead(200, {'Content-Type': 'text/plain'});
-  res.write('hello, i know nodejitsu.')
-  res.end();
-}).listen(8000);
+var app = express();
 
-/* server started */  
-util.puts('> hello world running on port 8000');
+app.configure(function(){
+  app.use(express.bodyParser());
+  app.use(express.methodOverride());
+  app.use(app.router);
+  app.use(express.static(__dirname + '/app'));
+});
 
-setTimeout(function () {
-  util.puts('Throwing error now.');
-  throw new Error('User generated fault.');
-}, 5000);
+app.configure('development', function(){
+  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+});
+
+app.configure('production', function(){
+  app.use(express.errorHandler());
+});
+
+/*
+app.get('/', routes.index);
+app.get('/form', function(req, res) {
+  fs.readFile('./form.html', function(error, content) {
+    if (error) {
+      res.writeHead(500);
+      res.end();
+    }
+    else {
+      res.writeHead(200, { 'Content-Type': 'text/html' });
+      res.end(content, 'utf-8');
+    }
+  });
+});
+
+app.post('/signup', function(req, res) {
+  var username = req.body.username;
+  var password = req.body.password;
+  User.addUser(username, password, function(err, user) {
+    if (err) throw err;
+    res.redirect('/form');
+  });
+});
+*/
+
+app.listen(3000, '0.0.0.0');
+console.log("Express server listening...");

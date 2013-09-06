@@ -2,7 +2,8 @@ This demos how to use node.
 
 ============Tags==============
 [1]step-01 load node to run forever
-[2] 
+[2]step-02 read a form from file system, add node superviser. 
+[3]step-03 add angularjs client and multiple views
 
 
 ============References==============
