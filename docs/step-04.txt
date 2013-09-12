@@ -1,0 +1,59 @@
+============= add mongojs and test case to support =========
+
+[1] remove mongoose,mongodb,mocha
+
+[2] add test code for mocha
+
+
+
+
+
+var mongoose = require('mongoose')
+var Schema = mongoose.Schema,
+ObjectId = Schema.ObjectId
+
+var AuthorSchema = new Schema({
+	name: {
+		first : String,
+		last : String,
+		full : String
+	},
+	contact: {
+		email : String,
+		twitter : String,
+		google : String
+	},
+	photo : String
+});
+
+
+////////////////////////////////////
+
+var application_root = __dirname,
+    express = require("express"),
+    path = require("path"),
+    mongoose = require('mongoose');
+
+var app = express.createServer();
+
+// Database
+
+mongoose.connect('mongodb://localhost/ecomm_database');
+
+// Config
+
+app.configure(function () {
+  app.use(express.bodyParser());
+  app.use(express.methodOverride());
+  app.use(app.router);
+  app.use(express.static(path.join(application_root, "public")));
+  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+});
+
+app.get('/api', function (req, res) {
+  res.send('Ecomm API is running');
+});
+
+// Launch server
+
+app.listen(4242);

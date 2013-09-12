@@ -1,36 +1,3 @@
-#show dbs
-#db.getCollectionNames()
-
-
-[1] export to json
-mongoexport --db esm --collection events --out esm_events.json
-
-[2] import from json
-mongoimport -d esm -c events --file esm_events.json
-
-[3] list index
-db.system.indexes.find()
-
-[4] find returns all of the documents in a collection
-db.blog.find()
-
-[5]show collections
-db.getCollectionNames()
-
-[6]drop collection
-db.user.drop()
-db.user.remove()
-
-[7] drop a db
-> use sfm_test
-switched to db sfm_test
-> db.dropDatabase();
-{ "dropped" : "sfm_test", "ok" : 1 }
-
-
-mongo localhost:27017/rental schema.js
-load("schema.js")
-
 users = [{'password': 'passwd', 'is_active': false, 'email': 'mary@demo.org', 'role':1}, 
          {'password': 'foobar', 'is_active': true, 'email': 'wendy@abc.com', 'role':2}, 
          {'password': 'passwd', 'is_active': false, 'email': 'dustin@demo.org', 'role':3}, 
@@ -46,4 +13,3 @@ db.route.insert(routes);
 db.user.ensureIndex({email: 1}, {unique: true});
 db.role.ensureIndex({email: 1}, {unique: true});
 db.route.ensureIndex({url: 1}, {unique: true});
-

@@ -1,7 +1,6 @@
 var express = require('express')
-//  , routes = require('./routes')
-  , fs = require('fs')
-  , User = require('./models/User.js');
+  , auth = require('./api/auth')
+  , fs = require('fs');
 
 var app = express();
 
@@ -20,6 +19,8 @@ app.configure('production', function(){
   app.use(express.errorHandler());
 });
 
+app.get('/api/users', auth.findUsers);
+//app.get('/api/users/:id', auth.findUserById);
 /*
 app.get('/', routes.index);
 app.get('/form', function(req, res) {
@@ -45,5 +46,7 @@ app.post('/signup', function(req, res) {
 });
 */
 
+
 app.listen(3000, '0.0.0.0');
+
 console.log("Express server listening...");
