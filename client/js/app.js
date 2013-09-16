@@ -5,17 +5,20 @@ var demoApp = angular.module('appModule', [ 'ngResource','ngCookies' ]);
 demoApp.config(function($routeProvider, $locationProvider) {
 	$locationProvider.html5Mode(true);
 	$routeProvider.when('/home', {
-		templateUrl : 'views/public/home.html'
+		templateUrl : 'partials/index'
 	}).when('/settings', {
-		templateUrl : 'views/settings.html'
-	}).when('/login', {
-		controller : 'LoginCtrl',
-		templateUrl : 'views/login.html'
+		templateUrl : 'partials/settings'
 	}).when('/about', {
-		templateUrl : 'views/public/about.html'
+		templateUrl : 'partials/about'
 	}).when('/users', {
 		controller : 'UserCtrl',
-		templateUrl : 'views/user/list.html'
+		templateUrl : 'partials/users'
+	}).when('/addUser', {
+		controller : 'AddUserCtrl',
+		templateUrl : 'partials/userDetail'
+	}).when('/editUser/:id', {
+		controller : 'EditUserCtrl',
+		templateUrl : 'partials/userDetail'
 	}).otherwise({
 		redirectTo : '/home'
 	});
@@ -45,3 +48,8 @@ demoApp.config(function($httpProvider) {
 
 	$httpProvider.responseInterceptors.push(logsOutUserOn401);
 });
+
+//.when('/login', {
+//	controller : 'LoginCtrl',
+//	templateUrl : 'views/login.html'
+//})

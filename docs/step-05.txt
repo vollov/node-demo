@@ -1,0 +1,23 @@
+============= restructure =========
+[1]client folder to host static posts
+[2]route folder to host api and views
+
+http://briantford.com/blog/angular-express.html
+https://github.com/vollov/angular-express-blog
+http://naltatis.github.io/jade-syntax-docs/
+
+
+//		if (!err) {
+////			res.send(req.body);
+//			res.json(true);
+//		} else {
+//			res.json(false);
+//		}
+
+	//res.json(req.body);
+//			console.log('server update db end -> %j', req.body);
+//			req.body['_id'] = id;
+
+	db.findOne('user', {'_id': mongojs.ObjectId(id)},
+			//{'is_active': 1, 'email': 1, 'password': 1},
+			{},

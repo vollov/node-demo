@@ -1,8 +1,42 @@
 'use strict';
 
-demoApp.controller('UserCtrl', function ($scope, User) {
+///////////////// User Start///////////////////////
+demoApp.controller('UserCtrl', function ($scope, $http, User) {
 	$scope.users = User.query();
+	
+	$scope.selectUser = function(row) {
+		$scope.selectedRow = row;
+	};
+	
+	$scope.deleteUser = function(user, index) {
+		console.log('delete user._id->' + user._id);
+		user.$delete({id:user._id});
+		$scope.users.splice(index, 1);
+	};
 });
+
+demoApp.controller('AddUserCtrl', function($scope, $location, User) {
+	
+	$scope.saveUser = function() {
+		User.save($scope.user, function() {
+			$location.path('/users');
+		});
+	};
+});
+
+demoApp.controller('EditUserCtrl', function($scope, $location, $routeParams, User ) {
+	
+	$scope.user = User.get({
+		id : $routeParams.id
+	});
+	
+	$scope.saveUser = function() {
+		$scope.user.$update();
+		$location.path('/users')
+	}
+});
+
+///////////////// Other Start///////////////////////
 
 demoApp.controller("NavCtrl", function($scope, $location, AuthenticationService) {
 	$scope.logout = function() {

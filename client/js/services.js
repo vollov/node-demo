@@ -1,7 +1,7 @@
 'use strict';
 
 demoApp.factory('User', function($resource) {
-	return $resource('/api/users/:id', {id: '@id'}, {
+	return $resource('/api/user/:id', {id: '@id'}, {
         update: {method:'PUT'}
     });
 });

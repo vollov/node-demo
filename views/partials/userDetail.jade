@@ -1,0 +1,17 @@
+h2 User Profile
+form(ng-submit='saveUser()')
+  div
+    label email
+    input(ng-model='user.email')
+  div
+    label password
+    input(ng-model='user.password')
+  div
+    label is_active
+    input(type='checkbox',ng-model='user.is_active')
+  div
+    label role
+    input(ng-model='user.role')
+
+  input(type='submit',value='Submit')
+  

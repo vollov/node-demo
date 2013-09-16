@@ -1,14 +1,19 @@
 var express = require('express')
-  , auth = require('./api/auth')
-  , fs = require('fs');
+  , routes = require('./routes')
+  , api = require('./routes/api');
 
 var app = express();
 
 app.configure(function(){
+  app.set('views', __dirname + '/views');
+  app.set('view engine', 'jade');
+  app.set('view options', {
+    layout: false
+  });
   app.use(express.bodyParser());
   app.use(express.methodOverride());
+  app.use(express.static(__dirname + '/client'));
   app.use(app.router);
-  app.use(express.static(__dirname + '/app'));
 });
 
 app.configure('development', function(){
@@ -19,34 +24,20 @@ app.configure('production', function(){
   app.use(express.errorHandler());
 });
 
-app.get('/api/users', auth.findUsers);
-//app.get('/api/users/:id', auth.findUserById);
-/*
+//Views
 app.get('/', routes.index);
-app.get('/form', function(req, res) {
-  fs.readFile('./form.html', function(error, content) {
-    if (error) {
-      res.writeHead(500);
-      res.end();
-    }
-    else {
-      res.writeHead(200, { 'Content-Type': 'text/html' });
-      res.end(content, 'utf-8');
-    }
-  });
-});
+app.get('/partials/:name', routes.partials);
 
-app.post('/signup', function(req, res) {
-  var username = req.body.username;
-  var password = req.body.password;
-  User.addUser(username, password, function(err, user) {
-    if (err) throw err;
-    res.redirect('/form');
-  });
-});
-*/
+//API
+app.get('/api/user', api.users);
+app.get('/api/user/:id', api.user);
+app.post('/api/user', api.addUser);
+//app.put('/api/user/:id', api.editUser);
+app.put('/api/user', api.editUser);
+app.delete('/api/user/:id', api.deleteUser);
 
+//redirect all others to the index (HTML5 history)
+app.get('*', routes.index);
 
 app.listen(3000, '0.0.0.0');
-
 console.log("Express server listening...");
